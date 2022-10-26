@@ -13,7 +13,6 @@ local opts = {
     col = window_width,
 }
 
-
 local fill_buffer = function()
     local line = string.rep(" ", width)
     local filler = {}
@@ -24,10 +23,25 @@ local fill_buffer = function()
     return filler
 end
 
-M.show_board = function(key)
+local map_window_close_keys = function(buffer)
+    vim.api.nvim_buf_set_keymap(
+        buffer,
+        "n",
+        "<Esc>",
+        ":close<CR>",
+        {
+            silent=true,
+            nowait=true,
+            noremap=true
+        }
+    )
+end
+
+M.show_board = function()
     local buffer = vim.api.nvim_create_buf(false, true)
     local buffer_content = fill_buffer()
     vim.api.nvim_buf_set_lines(buffer, 0, -1, false, buffer_content)
+    map_window_close_keys(buffer)
 
     vim.api.nvim_open_win(buffer, true, opts)
 end
@@ -36,5 +50,6 @@ M.run_game = function()
     M.show_board()
 end
 
+-- TODO: remove call to run_game
 M.run_game()
 return M
