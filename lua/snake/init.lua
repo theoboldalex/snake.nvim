@@ -23,7 +23,6 @@ local fill_buffer = function()
     return filler
 end
 
-
 local map_window_close_keys = function(buffer)
     vim.api.nvim_buf_set_keymap(
         buffer,
@@ -37,7 +36,6 @@ local map_window_close_keys = function(buffer)
         }
     )
 end
-
 
 M.show_board = function()
     local buffer = vim.api.nvim_create_buf(false, true)
