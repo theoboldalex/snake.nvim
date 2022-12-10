@@ -1,1 +1,1 @@
-vim.cmd([[command! Snake :lua require("snake").run()]])
+vim.cmd([[command! Snake :lua require("main").run()]])
