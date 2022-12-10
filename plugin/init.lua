@@ -1,1 +1,1 @@
-vim.cmd([[command! SnakeRun :lua require"snake".run_game()]])
+vim.cmd([[command! Snake :lua require("snake").run()]])
