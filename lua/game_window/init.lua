@@ -1,5 +1,4 @@
 local G = {}
-
 math.randomseed(os.time())
 math.random(); math.random(); math.random();
 
@@ -31,21 +30,23 @@ local map_window_close_keys = function(buffer)
 end
 
 local fill_buffer = function(food_vector)
-    local line = string.rep(" ", width)
-    local food_line = ""
-    if (food_vector) then
-        food_line = string.rep(" ", width - food_vector.x - 1)
-        food_line = food_line .. "*"
-    end
     local filler = {}
+    local blank_space = " "
+    local food = "*"
+    local blank_line = string.rep(blank_space, width)
+    local food_line =
+        string.rep(blank_space, width - food_vector.x - 1) ..
+        food ..
+        string.rep(blank_space, food_vector.x)
 
     for i = 1, height do
         if (i == food_vector.y) then
             table.insert(filler, food_line)
         else
-            table.insert(filler, line)
+            table.insert(filler, blank_line)
         end
     end
+
     return filler
 end
 
@@ -55,15 +56,14 @@ end
 
 G.show = function()
     local buffer = vim.api.nvim_create_buf(false, true)
-    local food_vector = {
-        x = math.random(window_width),
-        y = math.random(window_height),
-    }
-    print(window_width)
-    local buffer_content = render_food(food_vector)
-    vim.api.nvim_buf_set_lines(buffer, 0, -1, false, buffer_content)
     map_window_close_keys(buffer)
+    local food_vector = {
+        x = math.random(width),
+        y = math.random(height),
+    }
+    local buffer_content = render_food(food_vector)
 
+    vim.api.nvim_buf_set_lines(buffer, 0, -1, false, buffer_content)
     vim.api.nvim_open_win(buffer, true, opts)
 end
 
