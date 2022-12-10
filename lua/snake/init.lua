@@ -1,10 +1,10 @@
-local helpers = require("helpers")
+local game_window = require("game_window")
 local M = {}
 
-M.run_game = function()
-    helpers.show_board()
+M.run = function()
+    game_window.show()
 end
 
--- TODO: remove call to run_game. Just here for quick iteration while building
-M.run_game()
+-- TODO: remove call to run. Just here for quick iteration while building
+M.run()
 return M

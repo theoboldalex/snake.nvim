@@ -37,7 +37,7 @@ local fill_buffer = function()
     return filler
 end
 
-H.show_board = function()
+H.show = function()
     local buffer = vim.api.nvim_create_buf(false, true)
     local buffer_content = fill_buffer()
     vim.api.nvim_buf_set_lines(buffer, 0, -1, false, buffer_content)
