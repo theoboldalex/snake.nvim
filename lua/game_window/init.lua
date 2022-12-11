@@ -15,7 +15,7 @@ local opts = {
     col = window_width,
 }
 
-local map_window_close_keys = function(buffer)
+local map_window_close_keys = function (buffer)
     vim.api.nvim_buf_set_keymap(
         buffer,
         "n",
@@ -29,18 +29,18 @@ local map_window_close_keys = function(buffer)
     )
 end
 
-local fill_buffer = function(food_vector)
+local fill_buffer = function (x, y)
     local filler = {}
     local blank_space = " "
     local food = "*"
     local blank_line = string.rep(blank_space, width)
     local food_line =
-        string.rep(blank_space, width - food_vector.x - 1) ..
+        string.rep(blank_space, width - x - 1) ..
         food ..
-        string.rep(blank_space, food_vector.x)
+        string.rep(blank_space, x)
 
     for i = 1, height do
-        if (i == food_vector.y) then
+        if (i == y) then
             table.insert(filler, food_line)
         else
             table.insert(filler, blank_line)
@@ -50,21 +50,22 @@ local fill_buffer = function(food_vector)
     return filler
 end
 
-local render_food = function (food_position)
-    return fill_buffer(food_position)
+local render_food = function (x, y)
+    return fill_buffer(x, y)
 end
 
 G.show = function()
     local buffer = vim.api.nvim_create_buf(false, true)
     map_window_close_keys(buffer)
-    local food_vector = {
-        x = math.random(width),
-        y = math.random(height),
-    }
-    local buffer_content = render_food(food_vector)
+    local buffer_content = render_food(math.random(width), math.random(height))
 
     vim.api.nvim_buf_set_lines(buffer, 0, -1, false, buffer_content)
     vim.api.nvim_open_win(buffer, true, opts)
+    -- lets figure out how to move the cursor on a timer. Busy loop? urgh...
+    -- might need to redraw buffer instead
+    for _ = 1, 10 do
+        vim.cmd("normal! l")
+    end
 end
 
 return G
